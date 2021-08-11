@@ -1,6 +1,7 @@
 /* global fetch, $, console, alert, jQuery  */
 'use strict';
 
+/** Default options for GridFilter */
 var GridFilterDefaultOptions = {
     features: {
         quickFilter: false

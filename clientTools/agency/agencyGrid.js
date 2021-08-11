@@ -2,6 +2,7 @@
 
 /**
  * Custom tool to use a GridManager instance to manage an Agency's list of agents in a grid. Also handles quick filtering by agent or workflow state, using a filter dialog and a button bar UI.
+ * Depends on a UI table with data columns defined in the table header.
  * */
 var agentsGrid = (function ($) {
     var options = {
@@ -33,7 +34,7 @@ var agentsGrid = (function ($) {
             tableListHeader: 'table.table.agents-list thead tr th.sortable'
         },
         urls: {
-            getGridPartial: '/Agents/SearchPage'
+            getGridPartial: '/Agents/SearchPage' /* URL to get data to refresh table. */
         }
     };
 

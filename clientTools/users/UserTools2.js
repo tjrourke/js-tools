@@ -4,6 +4,10 @@
 
 var UserTools = (function ($) {
 
+    /**
+     * Creates a new instance of UserTools.
+     * @param {any} customOptions Customized options from the parent UserManager object.
+     */
     var Constructor = function (options) {
         var callbacks = options.callbacks,
             defaults = options.defaults,
@@ -26,18 +30,25 @@ var UserTools = (function ($) {
             }
         }
 
+        /** Clean up UI after an operation. */
         function cleanUp() {
             var elements = getActiveModalFields();
             disableAndHide(elements.addButton, elements.addSpinner);
             disableAndHide(elements.editButton, elements.editSpinner);
         }
 
+        /** Cleanup the validation message. 
+         * @param {any} fieldElement The element used to show a validation message, which is to be cleared.
+        */
         function clearErrorField(fieldElement) {
             if (fieldElement.length) {
                 fieldElement.text('');
             }
         }
 
+        /** Cleanup all validation message. 
+         * @param {any} formElement The form element containing validation message elements to be cleared.
+        */
         function clearUserErrorFields(formElement) {
             var selectorsObj = selectors.errors;
             var keys = Object.getOwnPropertyNames(selectorsObj);
@@ -49,6 +60,10 @@ var UserTools = (function ($) {
             }
         }
 
+        /** Disable button and hide the spinner. 
+         * @param {any} button The button element to disable.
+         * @param {any} spinner The spinner/busy element to hide.
+        */
         function disableAndHide(button, spinner) {
             if (button && button.length > 0) {
                 button.removeAttr('disabled');
@@ -56,6 +71,11 @@ var UserTools = (function ($) {
             }
         }
 
+        /**
+         * Get the data from the active modal indicated by the dialog selector value.
+         * @param {any} dialogSelector CSS selector to use to query for the dialog.
+         * @returns {any} An object of the data found.
+         */
         function getActiveModalFields(dialogSelector) {
             var activeModal = dialogSelector != null && dialogSelector.length ? $(dialogSelector) : $('.modal.show');
             var form = activeModal.find('form');
@@ -81,11 +101,20 @@ var UserTools = (function ($) {
             return elementsObj;
         }
 
+        /**
+         * Gets a button element.
+         * @param {any} buttonSelector The CSS selector of the button element.
+         */
         function getButton(buttonSelector) {
             var button = $(buttonSelector);
             return button.length > 0 ? button : null;
         }
 
+        /**
+         * Gets a spinner element.
+         * @param {any} parentElement The parent element of the spinner.
+         * @param {any} spinnerSelector The CSS selector of the spinner element.
+         */
         function getChildSpinner(parentElement, spinnerSelector) {
             if (parentElement && parentElement.length > 0 && spinnerSelector) {
                 return parentElement.find(spinnerSelector);
@@ -94,12 +123,22 @@ var UserTools = (function ($) {
             return null;
         }
 
+        /**
+         * Sets a form field's validation message.
+         * @param {any} fieldElement The field element to set.
+         * @param {any} message The message to set in the field.
+         */
         function setErrorField(fieldElement, message) {
             if (fieldElement && fieldElement.length) {
                 fieldElement.text(message);
             }
         }
 
+        /**
+         * Sets a form's fields using the provided selectors and data.
+         * @param {any} data Object containing properties for selectors and values.
+         * @param {any} dialogSelector The selector to use to query for the dialog.
+         */
         function setFormFields(data, dialogSelector) {
             var elsObj = getActiveModalFields(dialogSelector);
             var editData = $.extend(true, {}, defaults.data, data);
@@ -107,6 +146,12 @@ var UserTools = (function ($) {
             setFormFieldBySelectors(toggleSelectors, editData, elsObj.form);
         }
 
+        /**
+         * Sets a form field using the provided selectors and values.
+         * @param {any} selectorsObj Object containing properties for selectors.
+         * @param {any} valuesObj The values object with keys matching the selector object keys.
+         * @param {any} formElement The form containing the fields to set.
+         */
         function setFormFieldBySelectors(selectorsObj, valuesObj, formElement) {
             var keys = Object.getOwnPropertyNames(selectorsObj);
             if (keys.length) {
@@ -130,6 +175,9 @@ var UserTools = (function ($) {
             }
         }
 
+        /** Set the text in validation elements.
+         * @param {any} validationList The list of validations to process.
+         */
         function setUserErrorFields(validationList) {
             var errSelectors = selectors.errors;
             validationList.forEach(function (valMsg) {
@@ -148,6 +196,9 @@ var UserTools = (function ($) {
             });
         }
 
+        /** Toggle the case of text in the source string.
+         * @param {string} sourceString The text to toggle case
+         */
         function toggleStringCase(sourceString) {
             var char = sourceString.charAt(0);
             return sourceString.replace(
@@ -169,6 +220,7 @@ var UserTools = (function ($) {
             return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
         };
 
+        /** Initialize handlers */
         $('#addUser, #editUser').click(function (e) {
             $(this).removeAttr('disabled');
             var spinner = getChildSpinner($(this), selectors.spinner);
